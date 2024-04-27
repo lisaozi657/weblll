@@ -1,0 +1,11 @@
+const Web3 = require('web3');
+
+// 连接到公共节点，如 Infura、Alchemy、QuickNode
+const web3 = new Web3('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'); // 替换为您的节点地址
+
+// 检查连接状态
+if (web3.isConnected()) {
+    console.log("成功连接到区块链节点");
+} else {
+    console.log("无法连接到区块链节点");
+}
