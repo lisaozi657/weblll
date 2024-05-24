@@ -1,0 +1,30 @@
+Web3import requests
+import json
+
+# Cosmos 节点的 REST API URL
+rest_api_url = "https://rest.cosmos.directory/cosmoshub"  # 选择您要查询的 Cosmos 节点
+
+# 查询余额的地址
+address = "cosmos1YourAddressHere"  # 替换为您要查询的 Cosmos 地址
+
+# 创建查询余额的 URL
+balance_url = f"{rest_api_url}/bank/balances/{address}"
+
+# 发起 GET 请求
+response = requests.get(balance_url)
+
+# 检查响应状态
+if response.status_code != 200:
+    raise Exception("无法查询 ATOM 余额")
+
+# 解析 JSON 响应
+balance_data = json.loads(response.text)
+
+# 查询 ATOM 余额
+atom_balance = 0
+for coin in balance_data['balances']:
+    if coin['denom'] == 'uatom':  # ATOM 在 Cosmos 中的最小单位是 uatom
+        atom_balance = int(coin['amount']) / 1_000_000  # 将 uatom 转换为 ATOM
+
+print(f"Address: {address}")
+print(f"ATOM Balance: {atom_balance} ATOM")
