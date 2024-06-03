@@ -1,0 +1,35 @@
+const Web3 = require('web3');
+
+// 使用 BSC RPC 节点地址连接到 BSC 网络
+const web3 = new Web3('https://bsc-dataseed.binance.org');
+
+// 设置发送者地址和私钥
+const senderAddress = '0xYourSenderAddress';
+const privateKey = 'YOUR_PRIVATE_KEY';
+
+// 设置接收者地址
+const recipientAddress = '0xRecipientAddress';
+
+// 设置转账金额（以最小单位为单位，例如对于 18 位小数的代币，1 个代币的最小单位为 10^18）
+const amount = '1000000000000000000'; // 1 BNB 或 1 个代币
+
+// 构造交易对象
+const txObject = {
+  from: senderAddress,
+  to: recipientAddress,
+  value: amount,
+  gas: 21000, // 默认 gas 限额
+  gasPrice: '5000000000', // 默认 gas 价格 (5 gwei)
+};
+
+// 签名并发送交易
+web3.eth.accounts.signTransaction(txObject, privateKey)
+  .then(signedTx => {
+    return web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+  })
+  .then(receipt => {
+    console.log('Transaction receipt:', receipt);
+  })
+  .catch(error => {
+    console.error('Error occurred:', error);
+  });
